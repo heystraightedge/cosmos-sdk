@@ -33,7 +33,7 @@ func TestBeginBlocker(t *testing.T) {
 
 	val := abci.Validator{
 		Address: pk.Address(),
-		Power:   amt.Int64(),
+		Power:   power,
 	}
 
 	// mark the validator as having signed

@@ -297,19 +297,19 @@ func TestGetValidatorSortingUnmixed(t *testing.T) {
 	ctx, _, keeper, _ := CreateTestInput(t, false, 1000)
 
 	// initialize some validators into the state
-	amts := []int64{
-		0,
-		100 * sdk.PowerReduction.Int64(),
-		1 * sdk.PowerReduction.Int64(),
-		400 * sdk.PowerReduction.Int64(),
-		200 * sdk.PowerReduction.Int64()}
+	amts := []sdk.Int{
+		sdk.NewIntFromUint64(0),
+		sdk.PowerReduction.MulRaw(100),
+		sdk.PowerReduction,
+		sdk.PowerReduction.MulRaw(400),
+		sdk.PowerReduction.MulRaw(200)}
 	n := len(amts)
 	var validators [5]types.Validator
 	for i, amt := range amts {
 		validators[i] = types.NewValidator(sdk.ValAddress(Addrs[i]), PKs[i], types.Description{})
 		validators[i].Status = sdk.Bonded
-		validators[i].Tokens = sdk.NewInt(amt)
-		validators[i].DelegatorShares = sdk.NewDec(amt)
+		validators[i].Tokens = amt
+		validators[i].DelegatorShares = sdk.NewDecFromInt(amt)
 		TestingUpdateValidator(keeper, ctx, validators[i], true)
 	}
 
@@ -388,19 +388,19 @@ func TestGetValidatorSortingMixed(t *testing.T) {
 	keeper.SetParams(ctx, params)
 
 	// initialize some validators into the state
-	amts := []int64{
-		0,
-		100 * sdk.PowerReduction.Int64(),
-		1 * sdk.PowerReduction.Int64(),
-		400 * sdk.PowerReduction.Int64(),
-		200 * sdk.PowerReduction.Int64()}
+	amts := []sdk.Int{
+		sdk.NewIntFromUint64(0),
+		sdk.PowerReduction.MulRaw(100),
+		sdk.PowerReduction,
+		sdk.PowerReduction.MulRaw(400),
+		sdk.PowerReduction.MulRaw(200)}
 
 	var validators [5]types.Validator
 	for i, amt := range amts {
 		validators[i] = types.NewValidator(sdk.ValAddress(Addrs[i]), PKs[i], types.Description{})
-		validators[i].DelegatorShares = sdk.NewDec(amt)
+		validators[i].DelegatorShares = sdk.NewDecFromInt(amt)
 		validators[i].Status = sdk.Bonded
-		validators[i].Tokens = sdk.NewInt(amt)
+		validators[i].Tokens = amt
 		TestingUpdateValidator(keeper, ctx, validators[i], true)
 	}
 
